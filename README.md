@@ -4,9 +4,9 @@ Marketing Campaign Manager is a Vue.js project designed to help you manage your 
 
 ## Features
 
-- **Campaign Management**: Create, edit, and delete campaigns.
-- **Campaign Monitoring**: Keep track of campaign important information such as start and end dates and budgets.
+-   **Campaign Management**: Create, edit, and delete campaigns.
+-   **Campaign Monitoring**: Keep track of campaign important information such as start and end dates and budgets.
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+This project is licensed under the MIT License.
