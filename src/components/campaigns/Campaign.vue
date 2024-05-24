@@ -2,10 +2,12 @@
 const props = defineProps({
     campaign: Object,
 })
+
+const emits = defineEmits('toggleActive')
 </script>
 
 <template>
-    <div v-show="campaign.active" class="campaign">
+    <div class="campaign">
         <header class="campaign-header">
             <h4>{{ campaign.name }}</h4>
             <p>Client 1</p>
@@ -19,7 +21,7 @@ const props = defineProps({
         </main>
         <footer class="campaign-footer">
             <button class="campaign-button">Edit</button>
-            <button class="campaign-button">Archive</button>
+            <button @click="$emit('toggleActive')" class="campaign-button">Archive</button>
         </footer>
     </div>
 </template>

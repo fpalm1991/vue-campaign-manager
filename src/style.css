@@ -41,7 +41,6 @@ body {
 
 .header {
     height: 10vh;
-    background-color: orange;
 }
 
 .main {
@@ -51,7 +50,6 @@ body {
 
 .footer {
     height: 10vh;
-    background-color: orange;
 }
 
 .navigation {
@@ -112,4 +110,15 @@ body {
 
 .campaign-button:hover {
     cursor: pointer;
+}
+
+.filter-container {
+    display: flex;
+    align-items: center;
+    margin: 1rem;
+}
+
+.filter {
+    border: none;
+    padding: 12px 24px;
 }
