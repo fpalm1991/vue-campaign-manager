@@ -10,7 +10,7 @@ const emits = defineEmits(['toggleActive', 'editCampaign'])
     <article class="campaign">
         <header class="campaign-header">
             <h4>{{ campaign.name }}</h4>
-            <p>{{ campaign.client }}</p>
+            <p class="campaign-client">{{ campaign.client }}</p>
             <div class="campaign-details">
                 <div class="campaign-detail">{{ campaign.platform }}</div>
                 <div class="campaign-detail">{{ campaign.type }}</div>
@@ -43,6 +43,10 @@ const emits = defineEmits(['toggleActive', 'editCampaign'])
 
 .campaign-header {
     text-align: left;
+}
+
+.campaign-client {
+    margin-bottom: 0.6rem;
 }
 
 .campaign-main {

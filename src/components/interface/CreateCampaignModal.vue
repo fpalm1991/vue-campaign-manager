@@ -1,21 +1,41 @@
 <script setup>
-import { watch } from 'vue'
+import { watch, reactive } from 'vue'
 import { useCampaignStore } from '../../stores/campaigns'
+import { v4 as uuidv4 } from 'uuid'
+
+const campaignStore = useCampaignStore()
 
 const props = defineProps({
     showModal: Boolean,
-    campaign: Object,
+    clients: Set,
     platforms: Set,
     types: Set,
 })
 
-const emits = defineEmits(['saveCampaign', 'closeModal'])
+const emits = defineEmits(['createCampaign', 'closeModal'])
 
-const campaignStore = useCampaignStore()
+const date = new Date()
+const year = date.getFullYear()
+let month = date.getMonth() + 1
+let day = date.getDate()
+month = month < 10 ? '0' + month : month
+day = day < 10 ? '0' + day : day
 
-const saveCampaign = () => {
-    campaignStore.updateCampaign(props.campaign)
-    emits('saveCampaign')
+const campaign = reactive({
+    id: uuidv4(),
+    platform: 'Google',
+    type: 'Search',
+    client: 'Client 1',
+    budget: null,
+    currency: null,
+    isActive: true,
+    startDate: `${year}-${month}-${day}`,
+    endDate: `${year}-${month}-${day}`,
+})
+
+const createCampain = () => {
+    campaignStore.createCampaign(campaign)
+    emits('createCampaign')
 }
 
 watch(
@@ -34,10 +54,10 @@ watch(
     <Teleport to="body">
         <div class="modal-container" v-show="showModal" @click="$emit('closeModal')">
             <div class="modal edit-campaign" @click.stop>
-                <h1>Edit {{ campaign.name }}</h1>
+                <h1>Create New Campaign</h1>
 
                 <div class="edit-campaign-element">
-                    <input type="text" v-model="campaign.name" />
+                    <input type="text" v-model="campaign.name" placeholder="Campaign name" />
                 </div>
 
                 <div class="edit-campaign-row">
@@ -57,7 +77,9 @@ watch(
                 </div>
 
                 <div class="edit-campaign-element">
-                    <input type="text" v-model="campaign.client" />
+                    <select v-model="campaign.client">
+                        <option v-for="client in clients" :value="client" :key="client">{{ client }}</option>
+                    </select>
                 </div>
 
                 <div class="edit-campaign-element">
@@ -65,7 +87,7 @@ watch(
                 </div>
 
                 <div class="edit-campaign-element">
-                    <input type="text" v-model="campaign.currency" placeholder="Curreny" />
+                    <input type="text" v-model="campaign.currency" placeholder="Currency" />
                 </div>
 
                 <div class="edit-campaign-row">
@@ -80,7 +102,7 @@ watch(
                     </div>
                 </div>
 
-                <button class="button-update-campaign" @click="saveCampaign">Update Campaign</button>
+                <button class="button-update-campaign" @click="createCampain">Create Campaign</button>
             </div>
         </div>
     </Teleport>

@@ -196,5 +196,9 @@ export const useCampaignStore = defineStore('campaigns', {
                 this.campaigns.splice(index, 1, updateCampaign)
             }
         },
+
+        createCampaign(createCampaign) {
+            this.campaigns.push(createCampaign)
+        },
     },
 })

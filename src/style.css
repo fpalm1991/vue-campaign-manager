@@ -106,6 +106,18 @@ body {
     vertical-align: middle;
 }
 
+.button-create-campaign {
+    background-color: #fff;
+    min-width: 160px;
+    background-color: #000;
+    border: 1px solid white;
+    min-height: 41px;
+}
+
+.button-create-campaign:hover {
+    cursor: pointer;
+}
+
 .campaign {
     margin: 1rem;
 }

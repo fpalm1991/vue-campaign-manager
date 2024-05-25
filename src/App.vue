@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { useCampaignStore } from './stores/campaigns.js'
 import Campaign from './components/campaigns/Campaign.vue'
 import EditCampaignModal from './components/interface/EditCampaignModal.vue'
+import CreateCampaignModal from './components/interface/CreateCampaignModal.vue'
 
 const campaignStore = useCampaignStore()
 
@@ -13,7 +14,8 @@ const campaignToEdit = computed(() => {
     return campaignStore.getCampaign(campaignIDToEdit.value)
 })
 
-const showModal = ref(false)
+const showEditModal = ref(false)
+const showCreateModal = ref(false)
 
 // References for selected options
 const showActiveCampaigns = ref(true)
@@ -88,12 +90,17 @@ const filteredCampaignsRespectingActiveArchived = computed(() => {
 // Additional information based on campaigns
 const activeCampaigns = computed(() => campaigns.value.filter((campaign) => campaign.isActive))
 const archivedCampaigns = computed(() => campaigns.value.filter((campaign) => !campaign.isActive))
+
 const allPlatforms = computed(() => {
     return new Set(campaigns.value.map((campaign) => campaign.platform))
 })
 
 const allTypes = computed(() => {
     return new Set(campaigns.value.map((campaign) => campaign.type))
+})
+
+const allClients = computed(() => {
+    return new Set(campaigns.value.map((campaign) => campaign.client))
 })
 
 // Additional information based on specific filtered campaigns
@@ -104,6 +111,10 @@ const activeFilteredCampaignsTotal = computed(() =>
 const archivedFilteredCampaignsTotal = computed(() =>
     filteredCampaignsTotal.value.filter((campaign) => !campaign.isActive)
 )
+
+const showSpecificCampaignInformation = computed(() => {
+    return selectedClient.value !== 'All Clients' || selectedPlatform.value !== 'All Platforms'
+})
 </script>
 
 <template>
@@ -133,7 +144,7 @@ const archivedFilteredCampaignsTotal = computed(() =>
                 </ul>
             </section>
 
-            <section class="overview-client">
+            <section v-show="showSpecificCampaignInformation" class="overview-client">
                 <h3 class="overview-title">Specific Information</h3>
                 <ul class="overview-list">
                     <li class="overview-list-item">
@@ -175,12 +186,14 @@ const archivedFilteredCampaignsTotal = computed(() =>
                         {{ platform }}
                     </option>
                 </select>
+
+                <button class="button-create-campaign" @click="showCreateModal = true">Create Campaign</button>
             </div>
 
             <div class="campaigns">
                 <Campaign
                     @toggleActive="campaign.isActive = !campaign.isActive"
-                    @editCampaign="(ci) => ((campaignIDToEdit = ci), (showModal = true))"
+                    @editCampaign="(ci) => ((campaignIDToEdit = ci), (showEditModal = true))"
                     v-for="campaign in filteredCampaignsRespectingActiveArchived"
                     :campaign="campaign"
                     :key="campaign.id"
@@ -192,11 +205,20 @@ const archivedFilteredCampaignsTotal = computed(() =>
     <footer class="footer"></footer>
 
     <EditCampaignModal
-        @saveCampaign="showModal = false"
-        @closeModal="showModal = false"
-        :showModal="showModal"
+        @saveCampaign="showEditModal = false"
+        @closeModal="showEditModal = false"
+        :showModal="showEditModal"
         :campaign="campaignToEdit"
         :platforms="allPlatforms"
+        :types="allTypes"
+    />
+
+    <CreateCampaignModal
+        @createCampaign="showCreateModal = false"
+        @closeModal="showCreateModal = false"
+        :showModal="showCreateModal"
+        :platforms="allPlatforms"
+        :clients="allClients"
         :types="allTypes"
     />
 </template>
