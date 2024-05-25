@@ -33,7 +33,7 @@ const possibleClients = computed(() => {
 
     // Make sure selected client is always in the list of possible clients
     // so it can not show an empty selection element.
-    if (!clients.has(selectedClient.value)) {
+    if (!clients.has(selectedClient.value) && selectedClient.value !== 'All Clients') {
         clients.add(selectedClient.value)
     }
 
@@ -41,12 +41,18 @@ const possibleClients = computed(() => {
 })
 
 const possiblePlatforms = computed(() => {
-    return new Set(
+    let platforms = new Set(
         campaigns.value
             .filter((campaign) => campaign.isActive === Boolean(showActiveCampaigns.value))
             .filter((campaign) => selectedClient.value === 'All Clients' || campaign.client === selectedClient.value)
             .map((campaign) => campaign.platform)
     )
+
+    if (!platforms.has(selectedPlatform.value) && selectedPlatform.value !== 'All Platforms') {
+        platforms.add(selectedPlatform.value)
+    }
+
+    return platforms
 })
 
 // Filtered campaigns not respecting selection active / archived
@@ -85,6 +91,7 @@ const archivedCampaigns = computed(() => campaigns.value.filter((campaign) => !c
 const allPlatforms = computed(() => {
     return new Set(campaigns.value.map((campaign) => campaign.platform))
 })
+
 const allTypes = computed(() => {
     return new Set(campaigns.value.map((campaign) => campaign.type))
 })
@@ -93,13 +100,10 @@ const allTypes = computed(() => {
 const activeFilteredCampaignsTotal = computed(() =>
     filteredCampaignsTotal.value.filter((campaign) => campaign.isActive)
 )
+
 const archivedFilteredCampaignsTotal = computed(() =>
     filteredCampaignsTotal.value.filter((campaign) => !campaign.isActive)
 )
-
-const toggleModal = () => {
-    showModal.value = !showModal.value
-}
 </script>
 
 <template>
@@ -185,7 +189,7 @@ const toggleModal = () => {
         </div>
     </main>
 
-    <footer class="footer" @click="toggleModal"></footer>
+    <footer class="footer"></footer>
 
     <EditCampaignModal
         @saveCampaign="showModal = false"
