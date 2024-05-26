@@ -5,24 +5,26 @@ import Campaign from './components/campaigns/Campaign.vue'
 import EditCampaignModal from './components/interface/EditCampaignModal.vue'
 import CreateCampaignModal from './components/interface/CreateCampaignModal.vue'
 
+// Store and reading campaigns
 const campaignStore = useCampaignStore()
-
 const campaigns = computed(() => campaignStore.getCampaigns)
 
+// Creating new Campaign
 const campaignIDToEdit = ref(1)
 const campaignToEdit = computed(() => {
     return campaignStore.getCampaign(campaignIDToEdit.value)
 })
 
+// Modals
 const showEditModal = ref(false)
 const showCreateModal = ref(false)
 
-// References for selected options
+// Selected filter options
 const showActiveCampaigns = ref(true)
 const selectedClient = ref('All Clients')
 const selectedPlatform = ref('All Platforms')
 
-// Calculating options for select elements
+// Calculating options for selection elements
 const possibleClients = computed(() => {
     let clients = new Set(
         campaigns.value
@@ -74,21 +76,24 @@ const filteredCampaignsTotal = computed(() => {
 
 // Filtered campaigns respecting selection active / archived
 const filteredCampaignsRespectingActiveArchived = computed(() => {
-    let filtered = campaigns.value.filter((campaign) => campaign.isActive === Boolean(showActiveCampaigns.value))
+    let filteredCampaigns = campaigns.value.filter(
+        (campaign) => campaign.isActive === Boolean(showActiveCampaigns.value)
+    )
 
     if (selectedClient.value !== 'All Clients') {
-        filtered = filtered.filter((campaign) => campaign.client === selectedClient.value)
+        filteredCampaigns = filteredCampaigns.filter((campaign) => campaign.client === selectedClient.value)
     }
 
     if (selectedPlatform.value !== 'All Platforms') {
-        filtered = filtered.filter((campaign) => campaign.platform === selectedPlatform.value)
+        filteredCampaigns = filteredCampaigns.filter((campaign) => campaign.platform === selectedPlatform.value)
     }
 
-    return filtered
+    return filteredCampaigns
 })
 
 // Additional information based on campaigns
 const activeCampaigns = computed(() => campaigns.value.filter((campaign) => campaign.isActive))
+
 const archivedCampaigns = computed(() => campaigns.value.filter((campaign) => !campaign.isActive))
 
 const allPlatforms = computed(() => {
@@ -112,6 +117,7 @@ const archivedFilteredCampaignsTotal = computed(() =>
     filteredCampaignsTotal.value.filter((campaign) => !campaign.isActive)
 )
 
+// Showing specific information when specific platform or client gets selected
 const showSpecificCampaignInformation = computed(() => {
     return selectedClient.value !== 'All Clients' || selectedPlatform.value !== 'All Platforms'
 })
