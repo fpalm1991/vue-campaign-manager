@@ -24,7 +24,7 @@ export const useCampaignStore = defineStore('campaigns', {
             this.error = null
 
             try {
-                const response = await fetch('https://vue-campaign-manager.felix-palm.ch/index.php/api/campaigns')
+                const response = await fetch('https://vue-campaign-manager.felix-palm.ch/api/campaigns')
                 if (!response.ok) {
                     throw new Error('Network response was not ok')
                 }
