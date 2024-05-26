@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref, onUnmounted } from 'vue'
 import { useCampaignStore } from './stores/campaigns.js'
 import Campaign from './components/campaigns/Campaign.vue'
 import EditCampaignModal from './components/interface/EditCampaignModal.vue'
@@ -8,6 +8,11 @@ import CreateCampaignModal from './components/interface/CreateCampaignModal.vue'
 // Store and reading campaigns
 const campaignStore = useCampaignStore()
 const campaigns = computed(() => campaignStore.getCampaigns)
+
+// Fetching campaigns from symfony api
+onMounted(() => {
+    campaignStore.fetchCampaigns()
+})
 
 // Creating new Campaign
 const campaignIDToEdit = ref(1)
@@ -211,6 +216,7 @@ const showSpecificCampaignInformation = computed(() => {
     <footer class="footer"></footer>
 
     <EditCampaignModal
+        v-if="campaigns.length > 0"
         @saveCampaign="showEditModal = false"
         @closeModal="showEditModal = false"
         :showModal="showEditModal"
@@ -220,6 +226,7 @@ const showSpecificCampaignInformation = computed(() => {
     />
 
     <CreateCampaignModal
+        v-if="campaigns.length > 0"
         @createCampaign="showCreateModal = false"
         @closeModal="showCreateModal = false"
         :showModal="showCreateModal"

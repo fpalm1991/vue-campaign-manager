@@ -2,188 +2,7 @@ import { defineStore } from 'pinia'
 
 export const useCampaignStore = defineStore('campaigns', {
     state: () => ({
-        campaigns: [
-            {
-                id: 1,
-                name: 'Summer Campaign',
-                platform: 'Google',
-                type: 'Search',
-                client: 'Client 1',
-                budget: 2000,
-                currency: 'CHF',
-                isActive: true,
-                startDate: '2024-06-01',
-                endDate: '2024-08-31',
-            },
-            {
-                id: 2,
-                name: 'Summer Campaign',
-                platform: 'Instagram',
-                type: 'Video',
-                client: 'Client 2',
-                budget: 3000,
-                currency: 'CHF',
-                isActive: true,
-                startDate: '2024-06-01',
-                endDate: '2024-08-31',
-            },
-            {
-                id: 3,
-                name: 'Spring Sale',
-                platform: 'Facebook',
-                type: 'Banner',
-                client: 'Client 2',
-                budget: 1500,
-                currency: 'USD',
-                isActive: true,
-                startDate: '2024-03-01',
-                endDate: '2024-05-31',
-            },
-            {
-                id: 4,
-                name: 'Summer Campaign',
-                platform: 'Twitter',
-                type: 'Post',
-                client: 'Client 2',
-                budget: 2500,
-                currency: 'EUR',
-                isActive: true,
-                startDate: '2024-06-01',
-                endDate: '2024-08-31',
-            },
-            {
-                id: 5,
-                name: 'Holiday Special',
-                platform: 'LinkedIn',
-                type: 'Article',
-                client: 'Client 2',
-                budget: 1800,
-                currency: 'CHF',
-                isActive: true,
-                startDate: '2024-12-01',
-                endDate: '2024-12-31',
-            },
-            {
-                id: 6,
-                name: 'Winter Discount',
-                platform: 'Google',
-                type: 'Display',
-                client: 'Client 6',
-                budget: 2200,
-                currency: 'GBP',
-                isActive: true,
-                startDate: '2024-12-01',
-                endDate: '2024-02-28',
-            },
-            {
-                id: 7,
-                name: 'Black Friday Blitz',
-                platform: 'Instagram',
-                type: 'Story',
-                client: 'Client 2',
-                budget: 2700,
-                currency: 'USD',
-                isActive: true,
-                startDate: '2024-11-01',
-                endDate: '2024-11-30',
-            },
-            {
-                id: 8,
-                name: 'Cyber Monday',
-                platform: 'Snapchat',
-                type: 'Snap Ad',
-                client: 'Client 8',
-                budget: 3100,
-                currency: 'EUR',
-                isActive: true,
-                startDate: '2024-11-01',
-                endDate: '2024-11-30',
-            },
-            {
-                id: 9,
-                name: 'New Year New You',
-                platform: 'YouTube',
-                type: 'Video',
-                client: 'Client 8',
-                budget: 3500,
-                currency: 'CHF',
-                isActive: true,
-                startDate: '2024-01-01',
-                endDate: '2024-01-31',
-            },
-            {
-                id: 10,
-                name: 'Special Offer',
-                platform: 'Pinterest',
-                type: 'Pin',
-                client: 'Client 10',
-                budget: 1900,
-                currency: 'GBP',
-                isActive: true,
-                startDate: '2024-02-01',
-                endDate: '2024-02-14',
-            },
-            {
-                id: 11,
-                name: 'Easter Promotions',
-                platform: 'Facebook',
-                type: 'Carousel',
-                client: 'Client 10',
-                budget: 2300,
-                currency: 'USD',
-                isActive: true,
-                startDate: '2024-03-01',
-                endDate: '2024-04-15',
-            },
-            {
-                id: 12,
-                name: 'Awareness Campaign',
-                platform: 'Google',
-                type: 'Search',
-                client: 'Client 10',
-                budget: 2600,
-                currency: 'CHF',
-                isActive: true,
-                startDate: '2024-08-01',
-                endDate: '2024-09-15',
-            },
-            {
-                id: 13,
-                name: 'Labor Day Sale',
-                platform: 'Twitter',
-                type: 'Post',
-                client: 'Client 13',
-                budget: 2100,
-                currency: 'USD',
-                isActive: true,
-                startDate: '2024-09-01',
-                endDate: '2024-09-15',
-            },
-            {
-                id: 14,
-                name: 'Halloween Special',
-                platform: 'Instagram',
-                type: 'Story',
-                client: 'Client 10',
-                budget: 3400,
-                currency: 'EUR',
-                isActive: true,
-                startDate: '2024-10-01',
-                endDate: '2024-10-31',
-            },
-            {
-                id: 15,
-                name: 'Testing Campaign',
-                platform: 'Test Platform',
-                type: 'Test Type',
-                client: 'Test Client',
-                budget: 10000,
-                currency: 'Test Currency',
-                isActive: true,
-                startDate: '2024-01-01',
-                endDate: '2024-12-31',
-            },
-        ],
+        campaigns: [],
     }),
     getters: {
         getCampaigns: (state) => state.campaigns,
@@ -199,6 +18,25 @@ export const useCampaignStore = defineStore('campaigns', {
 
         createCampaign(createCampaign) {
             this.campaigns.push(createCampaign)
+        },
+
+        async fetchCampaigns() {
+            this.error = null
+
+            try {
+                const response = await fetch('https://vue-campaign-manager.felix-palm.ch/index.php/api/campaigns')
+                if (!response.ok) {
+                    throw new Error('Network response was not ok')
+                }
+
+                const data = await response.json()
+                this.campaigns = data.campaigns
+            } catch (error) {
+                this.error = 'Failed to fetch campaigns'
+                console.log(error)
+            } finally {
+                this.isLoading = false
+            }
         },
     },
 })

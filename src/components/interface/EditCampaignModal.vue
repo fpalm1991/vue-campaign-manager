@@ -34,7 +34,7 @@ watch(
     <Teleport to="body">
         <div class="modal-container" v-show="showModal" @click="$emit('closeModal')">
             <div class="modal edit-campaign" @click.stop>
-                <h1>Edit {{ campaign.name }}</h1>
+                <h1>Edit {{ campaign?.name || '' }}</h1>
 
                 <div class="edit-campaign-element">
                     <input type="text" v-model="campaign.name" />
