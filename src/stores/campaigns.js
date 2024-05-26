@@ -113,7 +113,7 @@ export const useCampaignStore = defineStore('campaigns', {
             },
             {
                 id: 10,
-                name: "Valentine's Day Special",
+                name: 'Special Offer',
                 platform: 'Pinterest',
                 type: 'Pin',
                 client: 'Client 10',
@@ -137,7 +137,7 @@ export const useCampaignStore = defineStore('campaigns', {
             },
             {
                 id: 12,
-                name: 'Back to School',
+                name: 'Awareness Campaign',
                 platform: 'Google',
                 type: 'Search',
                 client: 'Client 10',
