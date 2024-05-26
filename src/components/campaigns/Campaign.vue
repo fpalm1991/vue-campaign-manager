@@ -32,6 +32,7 @@ const emits = defineEmits(['toggleActive', 'editCampaign'])
 
 <style scoped>
 .campaign {
+    text-align: left;
     min-height: 14rem;
     padding: 1rem 2.2rem;
     background-color: rgb(219, 219, 219);
@@ -39,10 +40,6 @@ const emits = defineEmits(['toggleActive', 'editCampaign'])
     border-radius: var(--basic-border-radius);
     display: grid;
     grid-template-rows: auto 1fr auto;
-}
-
-.campaign-header {
-    text-align: left;
 }
 
 .campaign-client {
