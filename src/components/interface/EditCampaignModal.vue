@@ -140,6 +140,21 @@ watch(
 .edit-campaign-row {
     column-gap: 1rem;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
+}
+
+.edit-campaign-row .edit-campaign-element:not(:last-child) {
+    margin-bottom: 1.2rem;
+}
+
+@media (min-width: 680px) {
+    .edit-campaign-row {
+        flex-direction: row;
+    }
+
+    .edit-campaign-row .edit-campaign-element:not(:last-child) {
+        margin-bottom: inherit;
+    }
 }
 </style>

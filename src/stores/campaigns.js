@@ -2,7 +2,20 @@ import { defineStore } from 'pinia'
 
 export const useCampaignStore = defineStore('campaigns', {
     state: () => ({
-        campaigns: [],
+        campaigns: [
+            {
+                id: 1,
+                name: 'Summer Campaign',
+                platform: 'Google',
+                type: 'Search',
+                client: 'Client 1',
+                budget: 2000,
+                currency: 'CHF',
+                isActive: true,
+                startDate: '2024-06-01',
+                endDate: '2024-08-31',
+            },
+        ],
     }),
     getters: {
         getCampaigns: (state) => state.campaigns,
